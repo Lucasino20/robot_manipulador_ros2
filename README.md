@@ -51,8 +51,7 @@ ros2 run proy_pkg interactive_publisher
 
 ---
 
-## 💻 Código para el Arduino / ESP32 (Para el compañero)
-
+## 💻 Código para el Arduino / ESP32
 Este paquete de ROS 2 espera comunicarse con el robot físico a través de un "idioma" (protocolo) muy simple por USB. 
 
 El compañero encargado del hardware debe tomar el siguiente código, integrarlo con su lógica de control de motores, y subirlo a la placa (Arduino/ESP32):
