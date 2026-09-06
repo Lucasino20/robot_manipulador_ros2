@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) -->
+<robot name="robot_arm_urdf">
+
+  <!-- ==================== LINK: BASE ==================== -->
+  <link name="Base">
+    <inertial>
+      <origin xyz="2.1406E-08 -8.8048E-05 0.02233" rpy="0 0 0" />
+      <mass value="0.096168" />
+      <inertia ixx="0.00013785" ixy="-2.2459E-11" ixz="9.3839E-12" iyy="0.0001281" iyz="-3.8967E-06" izz="0.00020825" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Base.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.89412 0.89412 0.89412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Base.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ==================== LINK: WAIST ==================== -->
+  <link name="Waist">
+    <inertial>
+      <origin xyz="0.00032299 0.02192 -0.0105" rpy="0 0 0" />
+      <mass value="0.099097" />
+      <inertia ixx="6.1827E-05" ixy="-8.9414E-06" ixz="5.8103E-07" iyy="6.6824E-05" iyz="9.2193E-06" izz="7.7929E-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Waist.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.89412 0.89412 0.89412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Waist.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ==================== JOINT 1 ==================== -->
+  <joint name="joint_1" type="revolute">
+    <origin xyz="0 0 0.056" rpy="1.5708 0 0" />
+    <parent link="Base" />
+    <child link="Waist" />
+    <axis xyz="0 1 0" />
+    <limit lower="0" upper="3.142" effort="300" velocity="3" />
+  </joint>
+
+  <!-- ==================== LINK: ARM 01 ==================== -->
+  <link name="Arm01">
+    <inertial>
+      <origin xyz="-1.4824E-07 0.0083771 0.06" rpy="0 0 0" />
+      <mass value="0.072885" />
+      <inertia ixx="0.00011555" ixy="4.4239E-11" ixz="6.2462E-11" iyy="0.00012019" iyz="4.0528E-11" izz="9.4221E-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Arm01.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.89412 0.89412 0.89412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Arm01.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ==================== JOINT 2 ==================== -->
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0.01179 0.04171 -0.0265" rpy="-1.5708 0 0" />
+    <parent link="Waist" />
+    <child link="Arm01" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.57" upper="1.57" effort="200" velocity="3" />
+  </joint>
+
+  <!-- ==================== LINK: ARM 02 ==================== -->
+  <link name="Arm02">
+    <inertial>
+      <origin xyz="0.040402 0.0073508 0.00013936" rpy="0 0 0" />
+      <mass value="0.05056" />
+      <inertia ixx="8.8345E-06" ixy="-2.9546E-07" ixz="-3.1139E-07" iyy="6.0439E-05" iyz="-1.1343E-09" izz="5.7164E-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Arm02.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.89412 0.89412 0.89412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Arm02.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ==================== JOINT 3 ==================== -->
+  <joint name="joint_3" type="revolute">
+    <origin xyz="0 0 0.12" rpy="0 0 -3.1416" />
+    <parent link="Arm01" />
+    <child link="Arm02" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0" upper="3.142" effort="200" velocity="3" />
+  </joint>
+
+  <!-- ==================== LINK: ARM 03 ==================== -->
+  <link name="Arm03">
+    <inertial>
+      <origin xyz="0.0050464 -0.0053776 -0.017676" rpy="0 0 0" />
+      <mass value="0.01631" />
+      <inertia ixx="3.8524E-06" ixy="-4.0659E-09" ixz="-1.1477E-08" iyy="4.9338E-06" iyz="-5.9158E-07" izz="2.554E-06" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Arm03.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.89412 0.89412 0.89412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://proy_pkg/meshes/Arm03.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ==================== JOINT 4 ==================== -->
+  <joint name="joint_4" type="revolute">
+    <origin xyz="0.08975 0.0075 -0.0053" rpy="0 -1.5708 0" />
+    <parent link="Arm02" />
+    <child link="Arm03" />
+    <axis xyz="0 0 -1" />
+    <!-- LÍMITES CORREGIDOS AQUÍ (lower < upper) -->
+    <limit lower="-3.142" upper="0" effort="200" velocity="3" />
+  </joint>
+
+</robot>
