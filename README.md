@@ -20,6 +20,9 @@ Para ejecutar este proyecto necesitas tener **Ubuntu** con **ROS 2** instalado (
 ### Compilar el proyecto
 Abre una terminal en esta carpeta y ejecuta:
 ```bash
+# Cargar ROS 2
+source /opt/ros/jazzy/setup.bash
+
 # Limpiar instalaciones previas por si acaso
 rm -rf build/ install/ log/
 
@@ -36,14 +39,18 @@ source install/setup.bash
 
 **Terminal 1 (Visualización RViz):**
 ```bash
+cd ~/Desktop/Robotica/robot_manipulador_ros2
+source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 ros2 launch proy_pkg robot.launch.py
 ```
 *Se abrirá RViz mostrando el modelo 3D del robot.*
 
 **Terminal 2 (Control Interactivo):**
-Abre una nueva terminal en esta misma carpeta:
+Abre una nueva terminal:
 ```bash
+cd ~/Desktop/Robotica/robot_manipulador_ros2
+source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 ros2 run proy_pkg interactive_publisher
 ```
