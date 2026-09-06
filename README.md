@@ -47,6 +47,7 @@ ros2 launch proy_pkg robot.launch.py
 *Se abrirá RViz mostrando el modelo 3D del robot.*
 
 **Terminal 2 (Control Interactivo):**
+Abre una nueva terminal en esta misma carpeta:
 Abre una nueva terminal:
 ```bash
 cd ~/Desktop/Robotica/robot_manipulador_ros2
