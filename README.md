@@ -11,13 +11,17 @@ Cumple con los requisitos de la Primera Entrega:
 
 ## 🛠️ Requisitos e Instalación
 
-Para ejecutar este proyecto necesitas tener **Ubuntu** con **ROS 2** instalado (probado en Jazzy).
+Para ejecutar la parte de la computadora necesitas **Ubuntu** con **ROS 2** (probado en Jazzy).
 
-### Si usas Windows (WSL2):
-1. Debes instalar ROS 2 dentro de tu distribución de WSL2.
-2. **Para que WSL2 detecte el Arduino por USB:** Necesitas instalar [usbipd-win](https://github.com/dorssel/usbipd-win) en Windows. Esto te permitirá "pasar" el puerto COM de Windows a `/dev/ttyUSB0` en Ubuntu.
+### 1. Preparar el entorno (Ubuntu Nativo o WSL2)
+- **Si usas Ubuntu nativo:** El único paso extra es dar permisos a tu usuario para leer el puerto USB. Abre una terminal y ejecuta:
+  `sudo usermod -a -G dialout $USER` (Luego debes reiniciar tu computadora o cerrar sesión).
+- **Si usas Windows (WSL2):** 
+  1. Instala ROS 2 dentro de tu WSL2.
+  2. Debes instalar [usbipd-win](https://github.com/dorssel/usbipd-win) en tu Windows. Esto te permitirá "enviar" la conexión del cable USB de Windows hacia el Linux de WSL2.
+  3. Al igual que en Ubuntu, dentro de WSL2 debes ejecutar `sudo usermod -a -G dialout $USER` para tener permisos sobre el USB.
 
-### Compilar el proyecto
+### 2. Compilar el proyecto en ROS 2
 Abre una terminal en esta carpeta y ejecuta:
 ```bash
 # Cargar ROS 2
@@ -59,11 +63,15 @@ ros2 run proy_pkg interactive_publisher
 
 ---
 
-## 💻 Código para el ESP32 (Para el compañero)
+## 💻 Código para el Arduino / ESP32
 
-A la computadora y a ROS 2 **no les importa qué placa usen** (Arduino o ESP32), ya que la comunicación es universal por cable USB a 115200 baudios. El código de Python de nuestra carpeta no necesita ningún cambio.
+A la computadora y a ROS 2 **no les importa qué placa usen** (Arduino o ESP32), ya que la comunicación es universal por cable USB a 115200 baudios. El código de Python de nuestra carpeta de ROS 2 no necesita ningún cambio.
 
-Sin embargo, para controlar los servomotores en el ESP32, **no pueden usar la librería clásica de Arduino**. El compañero encargado del hardware debe instalar la librería **`ESP32Servo`** en su Arduino IDE y usar este código como base:
+**⚠️ IMPORTANTE: Este código de abajo NO se ejecuta en ROS 2 ni en Linux.**
+Tu compañero debe hacer lo siguiente en su computadora (en Windows normal o Ubuntu, donde prefiera):
+1. Abrir el **Arduino IDE**.
+2. Ir a *Herramientas -> Administrar Bibliotecas...* y buscar/instalar la librería **`ESP32Servo`**.
+3. Pegar este código, adaptarlo a sus motores y subirlo a la placa ESP32.
 
 ```cpp
 #include <ESP32Servo.h>
@@ -77,6 +85,7 @@ void setup() {
   // Es crítico usar 115200 baudios para que ROS 2 lo entienda
   Serial.begin(115200);
   
+  // ---> INICIA TUS SERVOS AQUÍ <---
   // Asignar los pines correctos de tu ESP32 para cada motor
   servo1.attach(13); 
   servo2.attach(12);
@@ -103,6 +112,7 @@ void loop() {
 
   // 2. ENVIAR REALIMENTACIÓN A ROS 2 (Para mover el modelo 3D en RViz)
   // ---> LEE TUS SENSORES O POSICIONES ACTUALES AQUÍ <---
+  float real_q1 = 0.0; // Reemplazar con analogRead() o valor real
   float real_q1 = 0.0; // Reemplazar con analogRead() si tienen potenciómetros reales
   float real_q2 = 0.0; 
   float real_q3 = 0.0; 
