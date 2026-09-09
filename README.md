@@ -54,9 +54,6 @@ Abre una terminal en esta carpeta y ejecuta:
 # Cargar ROS 2
 source /opt/ros/jazzy/setup.bash
 
-# Limpiar instalaciones previas por si acaso
-rm -rf build/ install/ log/
-
 # Compilar
 colcon build
 
