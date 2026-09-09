@@ -59,17 +59,29 @@ ros2 run proy_pkg interactive_publisher
 
 ---
 
-## 💻 Código para el Arduino / ESP32
-Este paquete de ROS 2 espera comunicarse con el robot físico a través de un "idioma" (protocolo) muy simple por USB. 
+## 💻 Código para el ESP32 (Para el compañero)
 
-El compañero encargado del hardware debe tomar el siguiente código, integrarlo con su lógica de control de motores, y subirlo a la placa (Arduino/ESP32):
+A la computadora y a ROS 2 **no les importa qué placa usen** (Arduino o ESP32), ya que la comunicación es universal por cable USB a 115200 baudios. El código de Python de nuestra carpeta no necesita ningún cambio.
+
+Sin embargo, para controlar los servomotores en el ESP32, **no pueden usar la librería clásica de Arduino**. El compañero encargado del hardware debe instalar la librería **`ESP32Servo`** en su Arduino IDE y usar este código como base:
 
 ```cpp
+#include <ESP32Servo.h>
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+Servo servo4;
+
 void setup() {
   // Es crítico usar 115200 baudios para que ROS 2 lo entienda
   Serial.begin(115200);
   
-  // ---> INICIA TUS SERVOS AQUÍ <---
+  // Asignar los pines correctos de tu ESP32 para cada motor
+  servo1.attach(13); 
+  servo2.attach(12);
+  servo3.attach(14);
+  servo4.attach(27);
 }
 
 void loop() {
@@ -84,12 +96,14 @@ void loop() {
       sscanf(data.c_str(), "CMD,%f,%f,%f,%f", &q1, &q2, &q3, &q4);
       
       // ---> MUEVE TUS MOTORES A LOS ÁNGULOS q1, q2, q3, q4 AQUÍ <---
+      // Ejemplo: servo1.write(q1); 
+      // (Ojo: mapear los ángulos si tu servo solo va de 0 a 180)
     }
   }
 
   // 2. ENVIAR REALIMENTACIÓN A ROS 2 (Para mover el modelo 3D en RViz)
   // ---> LEE TUS SENSORES O POSICIONES ACTUALES AQUÍ <---
-  float real_q1 = 0.0; // Reemplazar con analogRead() o valor real
+  float real_q1 = 0.0; // Reemplazar con analogRead() si tienen potenciómetros reales
   float real_q2 = 0.0; 
   float real_q3 = 0.0; 
   float real_q4 = 0.0; 
