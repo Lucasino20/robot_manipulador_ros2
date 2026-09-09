@@ -14,7 +14,7 @@ Cumple con los requisitos de la Primera Entrega:
 Para ejecutar la parte de la computadora necesitas **Ubuntu** con **ROS 2** (probado en Jazzy).
 
 ### 1. ¿No tienes ROS 2 Jazzy instalado? (Aplica para Ubuntu y WSL2)
-Si tu compañero no tiene ROS 2, primero debe asegurarse de tener **Ubuntu 24.04** (ya sea nativo o descargado desde la Microsoft Store para WSL2). Luego, debe abrir su terminal y ejecutar estos comandos bloque por bloque para instalar ROS 2 Jazzy y Colcon:
+Si no tienes ROS 2, primero debe asegurarse de tener **Ubuntu 24.04** (ya sea nativo o descargado desde la Microsoft Store para WSL2). Luego, debe abrir su terminal y ejecutar estos comandos bloque por bloque para instalar ROS 2 Jazzy y Colcon:
 
 <details>
 <summary><b>Haz clic aquí para ver los comandos de instalación</b></summary>
@@ -87,15 +87,15 @@ ros2 run proy_pkg interactive_publisher
 
 ---
 
-## 💻 Código para el Arduino / ESP32
+## 💻 Código para el ESP32
 
-A la computadora y a ROS 2 **no les importa qué placa usen** (Arduino o ESP32), ya que la comunicación es universal por cable USB a 115200 baudios. El código de Python de nuestra carpeta de ROS 2 no necesita ningún cambio.
+La comunicación ocurre por cable USB a 115200 baudios. El código de Python en ROS 2 ya está configurado a esa velocidad exacta (`115200`), por lo que no necesita ningún cambio adicional.
 
-**⚠️ IMPORTANTE: Este código de abajo NO se ejecuta en ROS 2 ni en Linux.**
-Tu compañero debe hacer lo siguiente en su computadora (en Windows normal o Ubuntu, donde prefiera):
+**⚠️ IMPORTANTE: Este código NO se ejecuta en ROS 2 ni en Linux.**
+Instrucciones:
 1. Abrir el **Arduino IDE**.
-2. Ir a *Herramientas -> Administrar Bibliotecas...* y buscar/instalar la librería **`ESP32Servo`**.
-3. Pegar este código, adaptarlo a sus motores y subirlo a la placa ESP32.
+2. Ir a *Herramientas -> Administrar Bibliotecas...* e instalar la librería **`ESP32Servo`**.
+3. Cargar el siguiente código en la placa ESP32.
 
 ```cpp
 #include <ESP32Servo.h>
@@ -106,11 +106,10 @@ Servo servo3;
 Servo servo4;
 
 void setup() {
-  // Es crítico usar 115200 baudios para que ROS 2 lo entienda
+  // 1. ABRE LA CONEXIÓN CON ROS 2 (Debe coincidir con Python: 115200 baudios)
   Serial.begin(115200);
   
-  // ---> INICIA TUS SERVOS AQUÍ <---
-  // Asignar los pines correctos de tu ESP32 para cada motor
+  // Asignar los pines correctos del ESP32 para cada motor
   servo1.attach(13); 
   servo2.attach(12);
   servo3.attach(14);
@@ -118,38 +117,35 @@ void setup() {
 }
 
 void loop() {
-  // 1. LEER LOS ÁNGULOS DESEADOS QUE ENVÍA ROS 2 (Computadora)
+  // 2. RECIBE LAS ÓRDENES DESDE ROS 2
   if (Serial.available() > 0) {
     String data = Serial.readStringUntil('\n');
     
-    // Si el texto empieza con "CMD," son los comandos de ROS 2
+    // Filtra el texto recibido buscando el comando "CMD,"
     if (data.startsWith("CMD,")) {
       float q1, q2, q3, q4;
-      // Extraemos los 4 números
       sscanf(data.c_str(), "CMD,%f,%f,%f,%f", &q1, &q2, &q3, &q4);
       
-      // ---> MUEVE TUS MOTORES A LOS ÁNGULOS q1, q2, q3, q4 AQUÍ <---
+      // Mover los motores a las posiciones recibidas
       // Ejemplo: servo1.write(q1); 
-      // (Ojo: mapear los ángulos si tu servo solo va de 0 a 180)
+      // (Mapear los ángulos si el servo tiene límites distintos)
     }
   }
 
-  // 2. ENVIAR REALIMENTACIÓN A ROS 2 (Para mover el modelo 3D en RViz)
-  // ---> LEE TUS SENSORES O POSICIONES ACTUALES AQUÍ <---
-  float real_q1 = 0.0; // Reemplazar con analogRead() o valor real
-  float real_q1 = 0.0; // Reemplazar con analogRead() si tienen potenciómetros reales
+  // 3. ENVÍA LA REALIMENTACIÓN A ROS 2 (Para mover el modelo 3D en RViz)
+  float real_q1 = 0.0; // Reemplazar con lectura del sensor (ej. analogRead)
   float real_q2 = 0.0; 
   float real_q3 = 0.0; 
   float real_q4 = 0.0; 
 
-  // Enviar los valores de vuelta a la computadora
+  // Transmite los valores de vuelta a la computadora por USB
   Serial.print("FBK,");
   Serial.print(real_q1); Serial.print(",");
   Serial.print(real_q2); Serial.print(",");
   Serial.print(real_q3); Serial.print(",");
   Serial.println(real_q4);
   
-  // Una pausa pequeña para no saturar la conexión (~20 Hz)
+  // Pausa para mantener la frecuencia de envío (~20 Hz)
   delay(50); 
 }
 ```
