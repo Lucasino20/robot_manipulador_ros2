@@ -13,7 +13,34 @@ Cumple con los requisitos de la Primera Entrega:
 
 Para ejecutar la parte de la computadora necesitas **Ubuntu** con **ROS 2** (probado en Jazzy).
 
-### 1. Preparar el entorno (Ubuntu Nativo o WSL2)
+### 1. ¿No tienes ROS 2 Jazzy instalado? (Aplica para Ubuntu y WSL2)
+Si tu compañero no tiene ROS 2, primero debe asegurarse de tener **Ubuntu 24.04** (ya sea nativo o descargado desde la Microsoft Store para WSL2). Luego, debe abrir su terminal y ejecutar estos comandos bloque por bloque para instalar ROS 2 Jazzy y Colcon:
+
+<details>
+<summary><b>Haz clic aquí para ver los comandos de instalación</b></summary>
+
+```bash
+# 1. Configurar idioma
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# 2. Agregar repositorios de ROS 2
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+sudo apt update && sudo apt install curl -y
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# 3. Instalar ROS 2 Desktop y herramientas de compilación
+sudo apt update
+sudo apt install ros-jazzy-desktop -y
+sudo apt install python3-colcon-common-extensions -y
+```
+</details>
+
+### 2. Configurar permisos USB (Fundamental)
 - **Si usas Ubuntu nativo:** El único paso extra es dar permisos a tu usuario para leer el puerto USB. Abre una terminal y ejecuta:
   `sudo usermod -a -G dialout $USER` (Luego debes reiniciar tu computadora o cerrar sesión).
 - **Si usas Windows (WSL2):** 
